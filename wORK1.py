@@ -1,6 +1,6 @@
 from work_func import separation_line, show_products, show_basket, total, your_d_code, products, prices, num_items
 import random
-import tkinter as tk
+from tkinter import Tk, Button, Entry, StringVar, Label, messagebox, mainloop
 total_store=[0]
 
 
@@ -121,6 +121,12 @@ def discount():
             user_cod=str(input("Please enter valid promo cod: "))
     #sets total_final to rounded total_d if discoun alied 
     total_store[0] = round(total_d, 2)
+
+window_entr = Tk()
+window_entr.title("Shop")
+window_entr.geometry("600x400")
+
+label1= Label(window_entr, text="Enter your name:")
 
 #call separation_line function
 separation_line()

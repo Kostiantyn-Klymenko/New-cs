@@ -31,7 +31,6 @@ windows.geometry("600x400")
 
 entry_name = Entry(windows, font=("Arial", 12), width=20)
 entry_name.pack()
-label = Entry(windows)
 entry_quantity = Entry(windows, font=("Arial", 12), width=20)
 entry_quantity.pack()
 
