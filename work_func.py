@@ -11,9 +11,10 @@ def separation_line():
     print("-"*55)
 
 def show_products():
-    print(f"\n{'Num. of items:':<15}\t{'Items:':<15}\t\t{'Price:':<10}")
+    msg=f"\n{'Num. of items:':<15}\t{'Items:':<15}\t\t{'Price:':<10}\n"
     for counter in range(len(products)):
-        print(f"{counter+1:<15}\t{products[counter].capitalize():<15}\t\t{str(prices[counter])+'$':<10}")
+        msg+=(f"{counter+1:<15}\t{products[counter].capitalize():<15}\t\t{str(prices[counter])+'$':<10}\n")
+    return msg
 
 def show_basket():
     msg = f"\n{'Num. of items:':<15}\t{'Items:':<15}\t\t{'Total per item:':<10}\n"
