@@ -32,21 +32,21 @@ windows.geometry("600x400")
 entry_name = Entry(windows, font=("Arial", 12), width=20)
 entry_name.pack()
 label = Entry(windows)
-entry_quantity = Entry(windows)
+entry_quantity = Entry(windows, font=("Arial", 12), width=20)
 entry_quantity.pack()
 
 
 
-button_add = Button(windows, text="Add", command=get_add_message)
+button_add = Button(windows, text="Add", command=get_add_message, width=10, height=2)
 button_add.pack()
 
-label_add = Label(windows, text="Add product")
+label_add = Label(windows, text="Add product", font=("Arial", 12), width=20)
 label_add.pack()
 
-button_b = Button(windows, text="Basket", command=show_full_basket)
+button_b = Button(windows, text="Basket", command=show_full_basket, width=10, height=2)
 button_b.pack()
 
-label_basket = Label(windows, text='')
+label_basket = Label(windows, text='', font=("Arial", 12), width=20)
 label_basket.pack()
 
 mainloop()
