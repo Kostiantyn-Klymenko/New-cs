@@ -1,9 +1,9 @@
 
-products=["coconut", "watermelon", "orange", "lemon", "banana", "apple", "avocado", "onion", "mushroom", "peanut"]
+products=["coconut", "watermelon", "orange", "lemon", "banana", "apple", "avocado", "onion", "mushroom", "peanut",'shampoo']
 
-prices=[3.5, 4.0, 2.0, 1.5, 1.0, 2.5, 5.0, 0.8, 3.0, 1.2]
+prices=[3.5, 4.0, 2.0, 1.5, 1.0, 2.5, 5.0, 0.8, 3.0, 1.2,50]
 
-num_items=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+num_items=[0] * len(products)
 
 
 def show_products():

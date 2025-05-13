@@ -144,15 +144,16 @@ frame_buy_choice2 = Frame(window_app)
 frame_discount = Frame(window_app)
 frame_end = Frame(window_app)
 
-
+i = 0
 for frame in (frame_start, frame_buy_choice, frame_main, frame_buy_choice2, frame_discount, frame_end):
-    frame.grid(row=0, column=0, sticky='nsew')
+    frame.grid(row=i, column=0, sticky='nsew')
+    i += 1
 
 
 #Start frame
 label1= Label(frame_start, text="Please enter your name for personalised greeting.")
 label1.pack(side=TOP)
-entry_user_name = Entry(frame_start, bg='lightgray')
+entry_user_name = Entry(frame_start, bg='lightgray',font=("Arial", 20))
 entry_user_name.pack(side=TOP)
 button_name = Button(frame_start, text="Enter", command=move_if_done)
 button_name.pack(side=TOP)
