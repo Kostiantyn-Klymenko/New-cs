@@ -2,6 +2,7 @@ from work_func import show_products, show_basket, total, your_d_code, add_to_bas
 import random
 from tkinter import *
 total_store=[0]
+total_d=float(total())
 
 
 def show_frame(frame):
@@ -32,12 +33,12 @@ def add():
     entry_quantity = Entry(add_basket, bg='lightgray')
     entry_quantity.pack()
 
-    def get_message():
+    def get_add_message():
         result = add_to_basket(entry_product.get().lower(), int(entry_quantity.get()) )
         label_add.config(text=result)
         label_basket.config(text=show_basket())
     
-    button_add = Button(add_basket, text="Add", command=get_message)
+    button_add = Button(add_basket, text="Add", command=get_add_message)
     button_add.pack()
 
     label_add = Label(add_basket, text="Add product")
@@ -56,12 +57,12 @@ def remove():
     entry_quantity = Entry(remove_basket, bg='lightgray')
     entry_quantity.pack()
 
-    def get_message():
+    def get_remove_message():
         result = remove_from_basket(entry_product.get().lower(), int(entry_quantity.get()) )
         label_add.config(text=result)
         label_basket.config(text=show_basket())
     
-    button_add = Button(remove_basket, text="Remove", command=get_message)
+    button_add = Button(remove_basket, text="Remove", command=get_remove_message)
     button_add.pack()
 
     label_add = Label(remove_basket, text="Remove product")
@@ -87,8 +88,9 @@ def no_move2():
 
 
 def discount():
-    user_cod = entry_discount.get().strip()
+    global total_d
     total_d=total()
+    user_cod = entry_discount.get().strip()
     if user_cod=="HALF":
         total_d*=0.5
         show_frame(frame_end)
@@ -96,22 +98,24 @@ def discount():
         random_num=round(random.uniform(0.0, 1.0), 3)
         total_d*=random_num
         show_frame(frame_end)
-    #elif user_cod=="YOUR":
-        '''your_promo = Toplevel()
+    elif user_cod=="YOUR":
+        your_promo = Toplevel()
         your_promo.title("YOUR promo cod")
         your_promo.geometry("300x200")
 
         entry_percentag = Entry(your_promo, bg='lightgray')
         entry_percentag.pack()
 
-        def get_message():
+        def get_promo_message():
             global total_d
-            percentage, result = your_d_code(int(entry_percentag.get()))
+            percentage, result = your_d_code(entry_percentag.get())
             label_promo.config(text = result)
             total_d *= percentage
+            if result.startswith("Discount applied:"):
+                show_frame(frame_end)
+                your_promo.destroy()
         
-        
-        button_apply = Button(your_promo, text="Apply", command=get_message)
+        button_apply = Button(your_promo, text="Apply", command=get_promo_message)
         button_apply.pack()
 
         label_promo = Label(your_promo, text="")
@@ -119,12 +123,12 @@ def discount():
 
         button_close = Button(your_promo, text="Close", command=your_promo.destroy)
         button_close.pack(side=BOTTOM)
-
-        show_frame(frame_end)'''
     else:
         label_discount.config(text="Error, invalid promo cod")
     #sets total_final to rounded total_d if discoun alied 
+    print(total_d)
     total_store[0] = round(total_d, 2)
+    print(total_store[0])
     label9.config(text=f"Final bill: {total_store[0]}$")
     
 

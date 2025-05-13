@@ -59,7 +59,7 @@ def your_d_code(user_percentage):
         if user_percentage>=0 and user_percentage<=100:
             user_percentage/=100
             user_percentage= 1 - user_percentage
-            msg = f"Discount applied: {user_percentage*100}%"
+            msg = f"Discount applied: {100-user_percentage*100}%"
         else:
             msg = "Error, invalid percentage discount"
     else:
