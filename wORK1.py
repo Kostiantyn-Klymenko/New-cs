@@ -111,7 +111,8 @@ def discount():
             percentage, result = your_d_code(entry_percentag.get())
             label_promo.config(text = result)
             total_d *= percentage
-            if result.startswith("Discount applied:"):
+            label9.config(text=f"Final bill: {round(total_d,2)}$")
+            if result.startswith("abcDiscount applied:"):
                 show_frame(frame_end)
                 your_promo.destroy()
         
