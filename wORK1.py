@@ -2,7 +2,7 @@ from work_func import show_products, show_basket, total, your_d_code, add_to_bas
 import random
 from tkinter import *
 total_store=[0]
-total_d=float(total())
+total_d=[0]
 
 
 def show_frame(frame):
@@ -88,15 +88,14 @@ def no_move2():
 
 
 def discount():
-    global total_d
-    total_d=total()
+    total_d[0]=total()
     user_cod = entry_discount.get().strip()
     if user_cod=="HALF":
-        total_d*=0.5
+        total_d[0]*=0.5
         show_frame(frame_end)
     elif user_cod=="RANDOM":
         random_num=round(random.uniform(0.0, 1.0), 3)
-        total_d*=random_num
+        total_d[0]*=random_num
         show_frame(frame_end)
     elif user_cod=="YOUR":
         your_promo = Toplevel()
@@ -107,12 +106,12 @@ def discount():
         entry_percentag.pack()
 
         def get_promo_message():
-            global total_d
             percentage, result = your_d_code(entry_percentag.get())
-            label_promo.config(text = result)
-            total_d *= percentage
-            label9.config(text=f"Final bill: {round(total_d,2)}$")
-            if result.startswith("abcDiscount applied:"):
+            label_promo.config(text=result)
+            if result.startswith("Discount applied:"):
+                total_d[0] *= percentage
+                total_store[0] = round(total_d[0], 2)
+                label9.config(text=f"Final bill: {total_store[0]}$")
                 show_frame(frame_end)
                 your_promo.destroy()
         
@@ -126,10 +125,8 @@ def discount():
         button_close.pack(side=BOTTOM)
     else:
         label_discount.config(text="Error, invalid promo cod")
-    #sets total_final to rounded total_d if discoun alied 
-    print(total_d)
-    total_store[0] = round(total_d, 2)
-    print(total_store[0])
+    #sets total_final to rounded total_d[0] if discoun alied 
+    total_store[0] = round(total_d[0], 2)
     label9.config(text=f"Final bill: {total_store[0]}$")
     
 
@@ -145,16 +142,15 @@ frame_buy_choice2 = Frame(window_app)
 frame_discount = Frame(window_app)
 frame_end = Frame(window_app)
 
-i = 0
 for frame in (frame_start, frame_buy_choice, frame_main, frame_buy_choice2, frame_discount, frame_end):
-    frame.grid(row=i, column=0, sticky='nsew')
-    i += 1
+    frame.grid(row=0, column=0, sticky='nsew')
+
 
 
 #Start frame
 label1= Label(frame_start, text="Please enter your name for personalised greeting.")
 label1.pack(side=TOP)
-entry_user_name = Entry(frame_start, bg='lightgray',font=("Arial", 20))
+entry_user_name = Entry(frame_start, bg='lightgray',font=("Arial", 12))
 entry_user_name.pack(side=TOP)
 button_name = Button(frame_start, text="Enter", command=move_if_done)
 button_name.pack(side=TOP)
