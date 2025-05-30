@@ -31,3 +31,31 @@ class Product:
             del self.products[product_name]
         else:
             print(f"{product_name} not found in the product list.")
+class Coupon:
+    def __init__(self, code):
+        '''this class represents a coupon with a code, discount percentage, and name'''
+        self.code = code
+        self.coupon_list = {
+            "DISCOUNT10": 0.10,
+            "SUMMER20": 0.20,
+            "WINTER15": 0.15,
+            "FALL25": 0.25,
+            "SPRING30": 0.30
+        }
+
+    def apply(self, amount):
+        '''this method applies the coupon to the given amount'''
+        if self.code in self.coupon_list:
+            discount = self.coupon_list[self.code]
+            discounted_amount = amount * (1 - discount)
+            return discounted_amount
+        else:
+            print(f"Invalid coupon code: {self.code}")
+            return amount
+    
+        
+        
+    
+    
+
+

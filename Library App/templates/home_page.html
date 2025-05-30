@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset = "UTF-8">
+		<title>Library HomePage</title>
+	</head>
+    <style> 
+        html, body {
+            height: 100%;      
+            margin: 0;     
+            font-size: 22px;
+        }
+
+        header {
+            background-color: darkblue;
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            position: relative;
+            top: 0;
+            left: 0;
+            text-align: center;
+            color: white;
+            color: white;
+            color: white;
+            color: white;
+            color: white;
+            color: white;
+            color: white;
+            color: white;
+            color: white;
+        }
+        input[type="text"] {
+            width: 1500px;
+            font-size: 22px;
+        }
+        #side_margins{
+            margin: 0 50px 0 50px;
+        }
+
+        dropdown {
+            label, select {
+                margin: 15px 0 5px 0;
+            }
+        }
+
+        .book_list {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+        }
+
+        .book_card {
+            min-width: 200px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            padding: 16px;
+            background-color: rgba(0, 0, 0, 0.2);
+            text-align: center;
+
+            h3 {
+                font-size: 27px;
+                margin: 0 0 8px 0;
+            }
+            p{
+                font-size: 21px;
+                margin: 0 0 1px 0;
+            }
+        }
+
+        .cover{
+			width: 300px;
+			height: 400px;
+        }
+        books_search{
+            display: flex;
+            padding: 10px;
+            background-color: #fff8ce;
+            border-radius: 8px;
+            flex-direction: column;
+        }
+
+        .button_nav {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            margin: 25px 0 10px 0;
+            button{
+                margin-top: 15px;
+                font-size: 18px;
+                padding: 10px 14px;
+            }
+            
+        }
+
+        .book_search_container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 35px;
+            margin-top: 20px;
+            justify-content: space-evenly;
+            background-color: #fff8ce;
+        }
+
+        .book_searched {
+            min-width: 200px;
+            flex-shrink: 0;
+            background: #fff8ce;
+            border-radius: 12px;
+            padding: 16px;
+            background-color: rgba(0, 0, 0, 0.2);
+            text-align: center;
+
+            h3 {
+                font-size: 27px;
+                margin: 0 0 8px 0;
+            }
+            p{
+                font-size: 21px;
+                margin: 0 0 1px 0;
+            }
+        }
+
+        footer {
+            font-size: 16px;
+            background-color: darkblue;
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            position: relative;
+            bottom: 0;
+            left: 0;
+            color: white;
+            a {
+                color: gray;
+            }
+        }
+
+    </style>
+    <body>  
+
+        <header>
+            <h1>Library</h1>   
+            <label for="search">Keyword Search:</label>
+            <input type="text" id="search" name="search" placeholder="Search by keyword">
+            <br><br>
+        </header>
+
+        <div id = "side_margins">
+            <dropdown>
+                <label for="year_choice">Year:</label>
+                <select id="year_choice" name="year_choice">
+                    <option value="">Select year</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                </select>
+
+                <label for="topic_choice">Topic:</label>
+                <select id="topic_choice" name="topic_choice">
+                    <option value="">Select topic</option>
+                    <option value="medical">Medical</option>
+                    <option value="history">History</option>
+                    <option value="technology">Technology</option>
+                </select>
+
+                <label for="author_choice">Author:</label>
+                <select id="author_choice" name="author_choice">
+                    <option value="">Select author</option>
+                    <option value="author1">author1</option>
+                    <option value="author2">author2</option>
+                    <option value="author3">author3</option>
+                </select>
+
+                <label for="rating_choice">Rating:</label>
+                <select id="rating_choice" name="rating_choice">
+                    <option value="">Select rating</option>
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★☆</option>
+                    <option value="3">★★★☆☆</option>
+                    <option value="2">★★☆☆☆</option>
+                    <option value="1">★☆☆☆☆</option>
+                </select>
+            </dropdown>
+
+            <scrol_top10>
+                <h2>Top 10 Books</h2>
+
+                <div class="book_list">
+                    {% for book in top_books %}
+                        <div class="book_card">
+                            <img src="{{ book.cover_image|default('https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg') }}" alt="book cover" class="cover">
+                            <h3>{{ book.title }}</h3>
+                            <p>Author: {{ book.author }}</p>
+                            <p>Rating: {{ '★' * book.rating }}{{ '☆' * (5 - book.rating) }}</p>
+                            <p>Topic: {{ book.topic }}</p>
+                        </div>
+                    {% endfor %}
+                                                                  
+                </div>
+            </scrol_top10>
+
+            <br><br>
+
+            <books_search>
+                <div class="book_search_container">
+                     {% for book in search_books %}
+                        <div class="book_searched">
+                            <img src="{{ book.cover_image|default('https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg') }}" alt="book cover" class="cover">
+                            <h3>{{ book.title }}</h3>
+                            <p>Author: {{ book.author }}</p>
+                            <p>Rating: {{ '★' * book.rating }}{{ '☆' * (5 - book.rating) }}</p>
+                            <p>Topic: {{ book.topic }}</p>
+                        </div>
+                    {% endfor %}
+                </div>  
+                <div class="button_nav">
+                <button>↶</button> <button>1</button> <button>2</button> <button>3</button> <button>4</button> <button>5</button> <button>↷</button>
+                </div>
+            </books_search>
+
+        </div>
+        <br><br><br><br><br><br>
+        <footer>
+            <p>Page Author: Kostiantyn Klymenko</p>
+            <p>Last Updated: May 2025</p>
+            <a href="about_us.html"> About us</a>  <a href="our_contacts.html"> Our Contacts</a>
+        </footer>
+
+    </body>

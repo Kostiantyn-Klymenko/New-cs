@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+    <title>Grocery Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6 text-center text-blue-700">Grocery Shop</h1>
+    <div class="flex flex-col md:flex-row gap-8">
+        <!-- Products -->
+        <div class="md:w-1/2 bg-white rounded-lg shadow p-6">
+            <h2 class="text-2xl font-semibold mb-4 text-green-700">Products</h2>
+            <ul>
+            {% for name, price in products.items() %}
+                <li class="flex items-center justify-between border-b py-2">
+                    <span>{{name}}: <span class="font-semibold text-gray-700">${{'%.2f' % price}}</span></span>
+                    <form action="{{url_for('add_to_cart')}}" method="post" class="flex items-center gap-2">
+                        <input type="hidden" name="product_name" value="{{name}}">
+                        <input type="number" name="quantity" value="1" min="1" class="w-16 px-2 py-1 border rounded">
+                        <input type="submit" value="Add to Cart" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded cursor-pointer">
+                    </form>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+        <!-- Cart -->
+        <div class="md:w-1/2 bg-white rounded-lg shadow p-6">
+            <h2 class="text-2xl font-semibold mb-4 text-yellow-700">Cart</h2>
+            <ul>
+            {% for item in cart %}
+                <li class="flex items-center justify-between border-b py-2">
+                    <span>{{item[0]}} x{{item[1]}} @ <span class="font-semibold text-gray-700">${{'%.2f' % item[2]}}</span></span>
+                    <form action="{{url_for('remove_from_cart')}}" method="post">
+                        <input type="hidden" name="product_name" value="{{item[0]}}">
+                        <input type="submit" value="Remove" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded cursor-pointer">
+                    </form>
+                </li>
+            {% endfor %}
+            </ul>
+            <p class="mt-4 text-lg font-bold text-right">Total: <span class="text-blue-700">${{'%.2f' % total}}</span></p>
+            <!-- Coupon -->
+            <form action="{{url_for('apply_coupon')}}" method="post" class="mt-4 flex gap-2">
+                <input type="text" name="coupon_code" placeholder="Coupon code" class="flex-1 px-3 py-2 border rounded">
+                <input type="submit" value="Apply Coupon" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded cursor-pointer">
+            </form>
+            {% if coupon_msg %}
+                <p class="mt-2 text-green-600 font-semibold">{{coupon_msg}}</p>
+            {% endif %}
+            <!-- Actions -->
+            <div class="flex flex-wrap gap-2 mt-6">
+                <form action="{{url_for('checkout')}}" method="post">
+                    <input type="submit" value="Checkout" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded cursor-pointer">
+                </form>
+                <form action="{{url_for('save_cart')}}" method="post">
+                    <input type="submit" value="Save Cart" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded cursor-pointer">
+                </form>
+                <form action="{{url_for('load_cart')}}" method="post">
+                    <input type="submit" value="Load Cart" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded cursor-pointer">
+                </form>
+                <form action="{{url_for('save_products')}}" method="post">
+                    <input type="submit" value="Save Products" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded cursor-pointer">
+                </form>
+                <form action="{{url_for('load_products')}}" method="post">
+                    <input type="submit" value="Load Products" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded cursor-pointer">
+                </form>
+            </div>
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <ul class="mt-4">
+                {% for message in messages %}
+                  <li class="text-red-600 font-semibold">{{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,4 +1,42 @@
-from products import  Product
+
+class Product:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price      
+
+available_products = {
+    "coconut": Product("coconut", 1.50),
+    "watermelon": Product("watermelon", 2.00),
+    "orange": Product("orange", 0.50),
+    "lemon": Product("lemon", 0.75),
+    "banana": Product("banana", 0.25),
+    "apple": Product("apple", 0.30),
+    "avocado": Product("avocado", 1.00),
+    "onion": Product("onion", 0.40),
+    "mushroom": Product("mushroom", 0.60),
+    "peanut": Product("peanut", 0.20),
+    "shampoo": Product("shampoo", 5.00),
+}
+        
+class Coupon:   
+    def __init__(self, code, discount_percent, label):
+        self.code = code
+        self.discount_percent = discount_percent
+        self.label = label
+
+    def apply(self, code, total):
+        if code in available_promos:
+            coupon = available_promos[code]
+            return round (total * (1 - coupon.discount_percent), 2)
+        else:
+            print(f"Error invalid coupon code: {code}")
+            return total
+
+available_promos = {
+    "HALF": Coupon("HALF", 0.5, "50% off"),
+    "WElCOME": Coupon("WELCOME", 0.2, "20% off"),
+}
+
 class Grocessy_app:
     def __init__(self,id,shop):
         self.id = id
@@ -6,8 +44,8 @@ class Grocessy_app:
         self.total_price = 0
         self.shop = shop
     def add_to_cart(self, product_name, quantity):
-        if product_name in self.shop.get_products():
-            price = self.shop.get_products()[product_name]
+        if product_name in available_products:
+            price = available_products[product_name].price
             self.cart.append((product_name, quantity, price))
             self.total_price += price * quantity
         else:
@@ -40,40 +78,6 @@ class Grocessy_app:
     def show_products(self):
         print("Available products:")
         for product, price in self.shop.get_products().items():
-            print(f"{product}: ${price:.2f}")
-    
-
-
-shop1 = Product()
-shop1.add_product("Laptop", 1200.00)
-shop1.add_product("Smartphone", 800.00)
-full_history = []
-for user in range(1, 5):
-    g1= Grocessy_app(user,shop1)
-    while True:
-        user_request = str(input("What do you want to do? (add/remove/show/checkout/exit/showproducts) ")).lower()
-        if user_request == "add":
-            product_name = str(input("Enter the product name: "))
-            quantity = int(input("Enter the quantity: "))
-            g1.add_to_cart(product_name, quantity)
-        elif user_request == "remove":
-            product_name = str(input("Enter the product name to remove: "))
-            g1.remove_from_cart(product_name)
-        elif user_request == "show":
-            g1.show_cart()
-        elif user_request == "checkout":
-            g1.checkout()
-        elif user_request == "exit":
-            break
-        elif user_request == "showproducts":
-            g1.show_products()
-        else:
-            print("Invalid command. Please try again.")
-            
-
-    full_history.append(g1)
-
-print("Full history of all users:")
-for user in full_history:
-    print(f"User {user.id}:")
-    user.show_cart()
+            print(f"{product}: ${price:.2f}",end="||")
+    def update_total_price(self, new_price):
+        self.total_price = new_price

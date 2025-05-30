@@ -1,4 +1,5 @@
-from work_func import show_products, show_basket, total, your_d_code, add_to_basket, remove_from_basket
+from work_func import show_products, show_basket, total, your_d_code, add_to_basket, remove_from_basket, show_promo, available_coupons, Coupon
+
 import random
 from tkinter import *
 from tkinter import ttk
@@ -85,29 +86,28 @@ def buy():
         show_frame(frame_buy_choice2)
 
 def yes_move2():
+    label7.config(text=show_promo())
     show_frame(frame_discount)
 
 def no_move2():
     label9.config(text=f"Final bill: {total_store[0]}$", font=("Arial", 14))
     show_frame(frame_end)
 
+
 def discount():
     global total_d
     total_d[0] = total()
     user_cod = entry_discount.get().strip()
-    if user_cod == "HALF":
-        total_d[0] *= 0.5
-        show_frame(frame_end)
-    elif user_cod == "RANDOM":
+    if user_cod == "RANDOM":
         random_num = round(random.uniform(0.0, 1.0), 3)
         total_d[0] *= random_num
+        label_discount.config(text=f"Random discount: {int(random_num*100)}% off!", fg="green")
         show_frame(frame_end)
     elif user_cod == "YOUR":
         your_promo = Toplevel()
         your_promo.title("YOUR Promo Code")
         your_promo.geometry("300x200")
         your_promo.configure(bg="#f0f0f0")
-
         Label(your_promo, text="Enter Discount Percentage:", bg="#f0f0f0", font=("Arial", 12)).pack(pady=5)
         entry_percentag = Entry(your_promo, bg='lightgray')
         entry_percentag.pack(pady=5)
@@ -131,6 +131,11 @@ def discount():
 
         button_close = Button(your_promo, text="Close", command=your_promo.destroy, bg="#f44336", fg="white", font=("Arial", 10))
         button_close.pack(side=BOTTOM, pady=10)
+    elif user_cod in available_coupons:
+        coupon = available_coupons[user_cod]
+        total_d[0] = coupon.apply(total_d[0])
+        label_discount.config(text=f"{coupon.name}: {int(coupon.discount_percent*100)}% off!", fg="green")
+        show_frame(frame_end)
     else:
         label_discount.config(text="Error, invalid promo code", fg="red")
 
