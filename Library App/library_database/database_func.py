@@ -24,7 +24,7 @@ def add_user(name, email, password):
         print("New user added:", new_id, name, email)
 
 
-def add_book(cover, title, author, genre, pub_year, rating):
+def add_book(cover, title, author, genre, pub_year, rating, description):
     cur = conn.cursor()
     cur.execute("SELECT * FROM Book WHERE title = ? AND author = ?", (title, author))
     existing_book = cur.fetchone()
@@ -41,7 +41,7 @@ def add_book(cover, title, author, genre, pub_year, rating):
         else:
             new_id = "B0001"
 
-        cur.execute("INSERT INTO Book (bookId, cover, title, author, genre, pub_year, rating) VALUES (?, ?, ?, ?, ?, ?, ?)", (new_id, cover, title, author, genre, pub_year, rating))
+        cur.execute("INSERT INTO Book (bookId, cover, title, author, genre, pub_year, rating, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (new_id, cover, title, author, genre, pub_year, rating))
         conn.commit()
 
         print("New book added:", new_id, title, author)

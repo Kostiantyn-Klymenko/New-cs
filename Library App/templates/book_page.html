@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset = "UTF-8">
+		<title>Library HomePage</title>
+	</head>
+    <style> 
+        html, body {
+            height: 100%;      
+            margin: 0;     
+            font-size: 22px;
+        }
+
+        header {
+            background-color: darkblue;
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            position: relative;
+            top: 0;
+            left: 0;
+            text-align: center;
+            color: white;
+            input[type="text"] {
+            width: 90%;
+            font-size: 22px;
+            }
+        }
+
+        main {
+            margin: 30px 3% 0 3%;
+        }
+        
+        book_info{
+            display: flex;
+            gap: 20px;
+        }
+
+        .main_cover {
+            width: 30%;
+            float: left;
+            img{
+                width: 400px;
+			    height: 600px; 
+            }
+        }
+
+        .description {
+            width: 70%;
+            float: left;
+            border-radius: 12px;
+            padding: 16px;
+            background-color: rgba(0, 0, 0, 0.2);
+
+        }
+
+        .book_list {
+            width: 100%;
+            display: flex;
+            overflow-x: auto;
+            gap: 1%;
+        }
+
+        .book_card {
+            width: 320px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            padding: 16px;
+            background-color: rgba(0, 0, 0, 0.2);
+            text-align: center;
+
+            h3 {
+                font-size: 27px;
+                margin: 0 0 8px 0;
+            }
+            p{
+                font-size: 21px;
+                margin: 0 0 1px 0;
+            }
+        }
+
+        .cover{
+			width: 300px;
+			height: 400px;
+        }
+
+        scrol_top10 h2{
+            text-align: center;
+        }
+
+        footer {
+            font-size: 16px;
+            background-color: darkblue;
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            position: relative;
+            bottom: 0;
+            left: 0;
+            color: white;
+            a {
+                color: gray;
+            }
+                
+        }
+
+    </style>
+
+    <body>  
+
+        <header>
+            <h1>Library</h1>   
+            <label for="search">Keyword Search:</label>
+            <input type="text" id="search" name="search" placeholder="Search by keyword">
+            <br><br>
+        </header>
+        
+        <main>
+            <book_info>
+
+                <div class="main_cover">
+                    <img src="{{the_book.cover_image|default('https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg')}}" alt="book cover">
+                </div>
+
+                <div class="description">
+                    <h3>{{ the_book.title }}</h3>
+                    <p>Author: {{ the_book.author }}</p>
+                    <p>Year: {{ the_book.year }}</p>
+                    <p>Rating: {{ '★' * the_book.rating }}{{ '☆' * (5 - the_book.rating) }}</p>
+                    <p>Topic: {{ the_book.topic }}</p>
+                    <p>Description: {{ the_book.description }} </p>
+                </div>
+
+            </book_info>
+            <scrol_top10>
+            <h2>Top 10 Books</h2>
+
+            <div class="book_list">
+                {% for book in top_books %}
+                    <div class="book_card">
+                        <img src="{{ book.cover_image|default('https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg') }}" alt="book cover" class="cover">
+                        <h3>{{ book.title }}</h3>
+                        <p>Author: {{ book.author }}</p>
+                        <p>Rating: {{ '★' * book.rating }}{{ '☆' * (5 - book.rating) }}</p>
+                        <p>Topic: {{ book.topic }}</p>
+                    </div>
+                {% endfor %}                                                 
+            </div>
+                
+        </scrol_top10>
+        </main>
+
+        <br><br><br>
+        <footer>
+            <p>Page Author: Kostiantyn Klymenko</p>
+            <p>Last Updated: May 2025</p>
+            <a href="about_us.html"> About us</a>  <a href="our_contacts.html"> Our Contacts</a>
+        </footer>
+    </body>

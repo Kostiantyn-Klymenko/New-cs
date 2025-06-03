@@ -22,21 +22,15 @@
             left: 0;
             text-align: center;
             color: white;
-            color: white;
-            color: white;
-            color: white;
-            color: white;
-            color: white;
-            color: white;
-            color: white;
-            color: white;
-        }
-        input[type="text"] {
-            width: 1500px;
+
+            input[type="text"] {
+            width: 90%;
             font-size: 22px;
+            }
         }
-        #side_margins{
-            margin: 0 50px 0 50px;
+
+        .side_margins{
+            margin: 0 3% 0 3%;
         }
 
         dropdown {
@@ -48,11 +42,11 @@
         .book_list {
             display: flex;
             overflow-x: auto;
-            gap: 15px;
+            gap: 1%;
         }
 
         .book_card {
-            min-width: 200px;
+            width: 320px;
             flex-shrink: 0;
             border-radius: 12px;
             padding: 16px;
@@ -81,31 +75,17 @@
             flex-direction: column;
         }
 
-        .button_nav {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            gap: 10px;
-            margin: 25px 0 10px 0;
-            button{
-                margin-top: 15px;
-                font-size: 18px;
-                padding: 10px 14px;
-            }
-            
-        }
-
         .book_search_container {
             display: flex;
             flex-wrap: wrap;
-            gap: 35px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 10px;
             justify-content: space-evenly;
             background-color: #fff8ce;
         }
 
         .book_searched {
-            min-width: 200px;
+            width: 320px;
             flex-shrink: 0;
             background: #fff8ce;
             border-radius: 12px;
@@ -137,6 +117,25 @@
                 color: gray;
             }
         }
+        
+        .nagination {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+        margin: 40px 0 20px 0;
+        }
+        .nagination a {
+        text-decoration: none;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        
+        }
+        .nagination a.active {
+        background-color: #007bff;
+        color: white;
+        pointer-events: none;
+        }
 
     </style>
     <body>  
@@ -148,7 +147,7 @@
             <br><br>
         </header>
 
-        <div id = "side_margins">
+        <div class = "side_margins">
             <dropdown>
                 <label for="year_choice">Year:</label>
                 <select id="year_choice" name="year_choice">
@@ -183,32 +182,43 @@
                     <option value="2">★★☆☆☆</option>
                     <option value="1">★☆☆☆☆</option>
                 </select>
+
+                <label for="rating_choice">Order by:</label>
+                <select id="rating_choice" name="rating_choice">
+                    <option value="">Select order</option>
+                    <option value="5">Alphabetically: Desc</option>
+                    <option value="4">Alphabetically: Asce</option>
+                    <option value="3">Ratings: Highs to Howest</option>
+                    <option value="2">Ratings: Lowest to Highest</option>
+                </select>
             </dropdown>
+        </div>
 
-            <scrol_top10>
-                <h2>Top 10 Books</h2>
+        <scrol_top10>
+            <h2>Top 10 Books</h2>
 
-                <div class="book_list">
-                    {% for book in top_books %}
-                        <div class="book_card">
-                            <img src="{{ book.cover_image|default('https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg') }}" alt="book cover" class="cover">
-                            <h3>{{ book.title }}</h3>
-                            <p>Author: {{ book.author }}</p>
-                            <p>Rating: {{ '★' * book.rating }}{{ '☆' * (5 - book.rating) }}</p>
-                            <p>Topic: {{ book.topic }}</p>
-                        </div>
-                    {% endfor %}
-                                                                  
-                </div>
-            </scrol_top10>
+            <div class="book_list">
+                {% for book in top_books %}
+                    <div class="book_card">
+                        <img src="{{ book.cover_image|default('https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg') }}" alt="book cover" class="cover">
+                        <h3>{{ book.title }}</h3>
+                        <p>Author: {{ book.author }}</p>
+                        <p>Rating: {{ '★' * book.rating }}{{ '☆' * (5 - book.rating) }}</p>
+                        <p>Topic: {{ book.topic }}</p>
+                    </div>
+                {% endfor %}                                                 
+            </div>      
+        </scrol_top10>
+        
+        <br><br>
 
-            <br><br>
+        <div class="side_margins">
 
             <books_search>
                 <div class="book_search_container">
-                     {% for book in search_books %}
+                     {% for book in search_books %}                       
                         <div class="book_searched">
-                            <img src="{{ book.cover_image|default('https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg') }}" alt="book cover" class="cover">
+                            <a href="/{{ book.bookId }}"> <img src="{{ book.cover_image|default('https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg') }}" alt="book cover" class="cover">
                             <h3>{{ book.title }}</h3>
                             <p>Author: {{ book.author }}</p>
                             <p>Rating: {{ '★' * book.rating }}{{ '☆' * (5 - book.rating) }}</p>
@@ -216,9 +226,35 @@
                         </div>
                     {% endfor %}
                 </div>  
-                <div class="button_nav">
-                <button>↶</button> <button>1</button> <button>2</button> <button>3</button> <button>4</button> <button>5</button> <button>↷</button>
+
+                <div class="nagination">
+                    {# Previous button — only show if not on first page #}
+                    {% if page > 1 %}
+                        <a href="/?page={{ page - 1 }}">&#8592;</a> {# ← Left Arrow #}
+                    {% endif %}
+
+                    {# Page numbers #}
+                    {% for p in range(1, total_pages + 1) %}
+                        <a href="/?page={{ p }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
+                    {% endfor %}
+
+                    {# Next button — only show if not on last page #}
+                    {% if page < total_pages %}
+                        <a href="/?page={{ page + 1 }}">&#8594;</a> {# → Right Arrow #}
+                    {% endif %}
                 </div>
+                <!-- <div class="nagination">
+                    {% if page > 1 %}
+                        <a href="/?page={{ page - 1 }}">↶</a>
+                    {% endif %}
+                    {% for p in range(1, total_pages + 1) %}
+                        <a href="/?page={{ p }}" class="{{ 'active' if p == page }}">{{ p }}</a>
+                    {% endfor %}
+                    {% if page < total_pages %}
+                        <a href="/?page={{ page + 1 }}">↷</a>
+                    {% endif %}
+                </div> -->
+
             </books_search>
 
         </div>
