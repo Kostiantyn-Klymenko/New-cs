@@ -1,11 +1,56 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
+
 
 
 BOOKS_PER_PAGE = 15
 
 app = Flask(__name__)
 
+app.secret_key = "secret_key"
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']         
+        password = request.form['password']
+        
+        # Here you would typically check the credentials against a database
+        connection = sqlite3.connect('library_database.db')
+        cursor = connection.cursor()
+        cursor.execute('SELECT * FROM User WHERE name = ? AND password = ?', (username, password))
+        user = cursor.fetchone()
+        if username== user[1] and password == user[2]:
+            session.clear()  # Clear any existing session data
+            session['user'] = username
+            print("User logged in:", username)
+            return redirect('/')
+
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    print("User logged out")
+    return redirect(url_for('index'))
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        
+        connection = sqlite3.connect('library_database.db')
+        cursor = connection.cursor()
+        cursor.execute('INSERT INTO User (name, email,  password) VALUES (?, ?, ?)', (username,email, password))
+        connection.commit()
+        connection.close()
+        session['user'] = username
+        return redirect(url_for('login'))
+    
+    return render_template('register.html')
 
 
 @app.route('/')
@@ -47,7 +92,7 @@ def index():
                 'topic':row[4]
             }
         )
-    return render_template('home_page.html',top_books=top10books, search_books = current_books,page=page,total_pages=total_pages)
+    return render_template('home_page.html',top_books=top10books, search_books = current_books,page=page,total_pages=total_pages, user=session['user'] if 'user' in session else None)
 
 
 @app.route("/<string:BookId>")
