@@ -11,7 +11,9 @@ app.secret_key = "secret_key"
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    print("Login page accessed")
     if request.method == 'POST':
+        print('inside post method')
         username = request.form['username']         
         password = request.form['password']
         
@@ -20,10 +22,13 @@ def login():
         cursor = connection.cursor()
         cursor.execute('SELECT * FROM User WHERE name = ? AND password = ?', (username, password))
         user = cursor.fetchone()
-        if username== user[1] and password == user[2]:
+        print('user is acccessed', user)
+        if username== user[1] and password == user[3]:
+            print("User found:", user)
             session.clear()  # Clear any existing session data
             session['user'] = username
             print("User logged in:", username)
+            print("Session data:", session)
             return redirect(url_for('index'))
 
     return render_template('login.html')

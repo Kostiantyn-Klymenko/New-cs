@@ -37,7 +37,10 @@
 <body>
     <div class="login-container">
         <h2>Login</h2>
-        <form method="post">
+        <form method="post" action="/login">
+            {% if error %}
+                <p style="color: red;">{{ error }}</p>
+            {% endif %}
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
