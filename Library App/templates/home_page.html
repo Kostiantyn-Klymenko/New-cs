@@ -27,6 +27,15 @@
             width: 90%;
             font-size: 22px;
             }
+
+            p{
+                text-align: right;
+                color:#50a5ff;
+                font-size: 15px;
+            }
+            button{
+                text-align: right;
+            }
         }
 
         .side_margins{
@@ -118,20 +127,20 @@
             }
         }
         
-        .nagination {
+        .navigation {
         display: flex;
         flex-direction: row;
         justify-content: center;
         gap: 10px;
         margin: 40px 0 20px 0;
         }
-        .nagination a {
+        .navigation a {
         text-decoration: none;
         padding: 5px 10px;
         border: 1px solid #ccc;
         
         }
-        .nagination a.active {
+        .navigation a.active {
         background-color: #007bff;
         color: white;
         pointer-events: none;
@@ -139,8 +148,24 @@
 
     </style>
     <body>  
-        <h1>Welcome {{ user }}</h1>
         <header>
+            {% if user %}
+                <form action="{{ url_for('logout') }}" method="post";>
+                    <p>Welcome {{ user }}</p>
+                    <button type="submit">
+                        Log out
+                    </button>
+                </form>
+            {% else %}
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 10px;">
+                    <a href="{{ url_for('login') }}">
+                        <button type="button">Sign In</button>
+                    </a>
+                    <a href="{{ url_for('register') }}">
+                        <button type="button">Sign Up</button>
+                    </a>
+                </div>
+            {% endif %}
             <h1>Library</h1>   
             <label for="search">Keyword Search:</label>
             <input type="text" id="search" name="search" placeholder="Search by keyword">
@@ -227,23 +252,7 @@
                     {% endfor %}
                 </div>  
 
-                <div class="nagination">
-                    {# Previous button — only show if not on first page #}
-                    {% if page > 1 %}
-                        <a href="/?page={{ page - 1 }}">&#8592;</a> {# ← Left Arrow #}
-                    {% endif %}
-
-                    {# Page numbers #}
-                    {% for p in range(1, total_pages + 1) %}
-                        <a href="/?page={{ p }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
-                    {% endfor %}
-
-                    {# Next button — only show if not on last page #}
-                    {% if page < total_pages %}
-                        <a href="/?page={{ page + 1 }}">&#8594;</a> {# → Right Arrow #}
-                    {% endif %}
-                </div>
-                <!-- <div class="nagination">
+                <div class="navigation">
                     {% if page > 1 %}
                         <a href="/?page={{ page - 1 }}">↶</a>
                     {% endif %}
@@ -253,7 +262,7 @@
                     {% if page < total_pages %}
                         <a href="/?page={{ page + 1 }}">↷</a>
                     {% endif %}
-                </div> -->
+                </div>
 
             </books_search>
 

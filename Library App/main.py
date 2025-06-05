@@ -29,7 +29,7 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     session.pop('user', None)
     print("User logged out")
@@ -44,11 +44,28 @@ def register():
         
         connection = sqlite3.connect('library_database.db')
         cursor = connection.cursor()
-        cursor.execute('INSERT INTO User (name, email,  password) VALUES (?, ?, ?)', (username,email, password))
-        connection.commit()
-        connection.close()
-        session['user'] = username
-        return redirect(url_for('login'))
+
+        cursor.execute("SELECT * FROM User WHERE email = ?", (email,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            print("This user allready exists")
+        else:
+            cursor.execute("SELECT userId FROM User ORDER BY userId DESC LIMIT 1")
+            last_user = cursor.fetchone()
+
+            if last_user:
+                last_id_num = int(last_user[0][1:]) 
+                new_id = f"M{last_id_num + 1:04d}"  
+            else:
+                new_id = "M0001"
+
+            cursor.execute("INSERT INTO User (userId, name, email, password) VALUES (?, ?, ?, ?)", (new_id, username, email, password,))
+            print("New user added:", new_id, username, email)
+            connection.commit()
+            connection.close()
+            session['user'] = username
+            return redirect(url_for('login'))
     
     return render_template('register.html')
 

@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS Book
     );
 ''')
 
-cur.execute('DROP TABLE IF EXISTS Usre ')
+cur.execute('DROP TABLE IF EXISTS User ')
 cur.execute('''
 CREATE TABLE IF NOT EXISTS User 
     (
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS Loan
     );
 ''')
 
-Books = [
+Book = [
 ('B0001', 'https://covers.openlibrary.org/b/id/8225631-L.jpg', 'To Kill a Mockingbird', 'Harper Lee', 'Racial Injustice', 1960, 5, 'This novel explores moral growth and racial injustice through the eyes of young Scout Finch. Set in the 1930s Deep South, her father Atticus defends a Black man accused of rape. The story tackles empathy, justice, and prejudice, leaving a lasting impact with its powerful, emotional message and characters.'),
 ('B0002', 'https://covers.openlibrary.org/b/id/7222246-L.jpg', '1984', 'George Orwell', 'Dystopian Fiction', 1949, 5, 'Orwell\’s dystopian world is governed by Big Brother, where individuality is crushed and truth is manipulated. The novel follows Winston Smith as he secretly rebels against the Party. A chilling look at totalitarianism, surveillance, and propaganda, this book remains deeply relevant in discussions on freedom and personal autonomy.'),
 ('B0003', 'https://covers.openlibrary.org/b/id/8224813-L.jpg', 'Pride and Prejudice', 'Jane Austen', 'Romantic Fiction', 1813, 4, 'Elizabeth Bennet clashes with the proud Mr. Darcy in this sharp social commentary. Austen\’s romantic classic blends humor, irony, and keen observations on class, marriage, and personal growth. Through misunderstandings and realizations, it ultimately celebrates the triumph of love and mutual respect over pride and social expectation.'),
@@ -97,9 +97,9 @@ Books = [
 cur.executemany("""
 INSERT OR IGNORE INTO Book (bookId, cover, title, author, genre, pub_year, rating, description)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-""", Books)
+""", Book)
 
-Users = [
+User = [
     ('M0001', 'Alice Johnson', 'M0001@email.com', '1bcd'),
     ('M0002', 'Bob Smith', 'M0002@email.com', '3Bcd'),
     ('M0003', 'Charlie Davis', 'M0003@email.com', '6acd'),
@@ -111,9 +111,9 @@ Users = [
 cur.executemany("""
 INSERT OR IGNORE INTO User (userId, name, email, password)
 VALUES (?, ?, ?, ?)
-""", Users)
+""", User)
 
-Loans = [
+Loan = [
     ('M0001', 'B0001', '2025-02-25', '2025-03-11'),
     ('M0002', 'B0002', '2025-02-28', '2025-03-14'),
     ('M0003', 'B0004', '2025-03-01', '2025-03-15'),
@@ -124,7 +124,7 @@ Loans = [
 cur.executemany("""
 INSERT OR IGNORE INTO Loan (userId, bookId, loanDate, dueDate)
 VALUES (?, ?, ?, ?)
-""", Loans)
+""", Loan)
 
 conn.commit()
 conn.close()

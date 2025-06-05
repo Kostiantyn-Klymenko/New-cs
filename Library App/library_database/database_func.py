@@ -16,7 +16,7 @@ def add_user(name, email, password):
             last_id_num = int(last_user[0][1:]) 
             new_id = f"M{last_id_num + 1:04d}"  
         else:
-            new_id = "U0001"
+            new_id = "M0001"
 
         cur.execute("INSERT INTO User (userId, name, email) VALUES (?, ?, ?, ?)", (new_id, name, email, password))
         conn.commit()
